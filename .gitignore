@@ -1,5 +1,5 @@
 env
-.keras
+*.keras
 __pycache__
 images
-.h5
+garbage.h5

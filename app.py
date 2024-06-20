@@ -18,6 +18,7 @@ class App(ft.Column):
 
         # Prediction 
         self.predict_btn = ft.TextButton(text="Predict", scale=1.5, adaptive=True, on_click=self.on_predict)
+
         self.predict_text = ft.Text(value="", size=30)
 
         # Representation on the page
@@ -51,10 +52,14 @@ class App(ft.Column):
                     ft.Row(
                         controls=[
                             self.predict_btn,
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    ft.Row(
+                        controls=[
                             self.predict_text
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
-                        spacing=20
                     )
                 ]
     

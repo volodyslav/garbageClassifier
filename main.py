@@ -3,7 +3,7 @@ from app import App
 
 def main(page: ft.Page):
     page.title = "Garbage Classifier"
-    page.padding = 10
+    page.padding = 20
     
     try:
         new_app = App()

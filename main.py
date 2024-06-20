@@ -3,7 +3,8 @@ from app import App
 
 def main(page: ft.Page):
     page.title = "Garbage Classifier"
-    
+    page.padding = 10
+
     new_app = App()
 
     page.add(new_app)

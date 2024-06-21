@@ -3,8 +3,9 @@ from model import load_image
 
 class App(ft.Column):
     """Main class for representing"""
-    def __init__(self):
+    def __init__(self, page):
         super().__init__()
+        self.page = page
         # Title
         self.title = ft.Text("Welcome to Garbage Classifier App", size=40, expand=True, text_align=ft.TextAlign.CENTER)
         
@@ -20,7 +21,7 @@ class App(ft.Column):
         self.predict_btn = ft.TextButton(text="Predict", scale=1.5, adaptive=True, on_click=self.on_predict)
 
         self.predict_text = ft.Text(value="", size=30)
-
+        self.predict_ring_load = ft.ProgressRing(visible=False)
         # Representation on the page
         self.controls = [
                     # Title row
@@ -57,7 +58,8 @@ class App(ft.Column):
                     ),
                     ft.Row(
                         controls=[
-                            self.predict_text
+                            self.predict_text,
+                            self.predict_ring_load
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
                     )
@@ -80,13 +82,33 @@ class App(ft.Column):
             self.predict_text.value = ""
             self.predict_text.update()
         except Exception as e:
-            print(e)
+            self.display_error_message("Can't open the file")
     
+    def check_loading_prediction(self):
+        """Check if the prediction is loading -> shows ring"""
+        if self.predict_text.value == "":
+            self.predict_ring_load.visible = True
+        else:
+            self.predict_ring_load.visible= False
+        self.predict_ring_load.update()
+
     def on_predict(self, e):
         """Prediction"""
         try:
-            self.predict_text.value = f"This is {load_image(self.image.src)}"
+            # Check to show ring loading
+            self.check_loading_prediction()
+            self.predict_text.value = f"This is {load_image(self.image.src)} garbage"
             self.predict_text.update()
+            # Make visible loading to False
+            self.check_loading_prediction()
+
         except Exception as e:
-            print(e)
-    
+            print("Erroe model", e)
+            self.display_error_message("Can't predict. Please, try again.")
+
+    def display_error_message(self, message):
+        """Displaying error on the page"""
+        dialog = ft.AlertDialog(title=ft.Text(message))
+        self.page.dialog = dialog
+        dialog.open = True
+        self.page.update()

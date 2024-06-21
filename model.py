@@ -3,7 +3,6 @@ from tensorflow import keras
 from PIL import Image, ImageOps
 import numpy as np
 
-
 image_size = (200, 200)
 labels = ['battery','biological','cardboard','clothes','glass',
           'metal', 'paper','plastic','shoes', 'trash']

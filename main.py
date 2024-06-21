@@ -6,7 +6,7 @@ def main(page: ft.Page):
     page.padding = 20
     
     try:
-        new_app = App()
+        new_app = App(page)
         page.add(new_app)
     except Exception as e:
         print(e)

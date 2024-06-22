@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from PIL import Image, ImageOps
 import numpy as np
+import platform
 
 image_size = (200, 200)
 labels = ['battery','biological','cardboard','clothes','glass',
@@ -20,6 +21,8 @@ def preprocess_image(image_path):
 def load_image(image_path):
     """Load the model and transform the image for predictions"""
     model = keras.models.load_model("garbage.h5")
+
+    # Determine the platform
     preprocess = preprocess_image(image_path)
     prediction = model.predict(preprocess)
     label = labels[prediction[0].argmax()]

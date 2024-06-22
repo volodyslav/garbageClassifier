@@ -12,13 +12,13 @@ class App(ft.Column):
         # Image picker
         self.file_picker = ft.FilePicker(on_result=self.on_dialog_result)
         self.button_picker = ft.IconButton(icon=ft.icons.UPLOAD_FILE, on_click=self.upload_file, adaptive=True, scale=1.5, tooltip="Load image")
-        self.text_file = ft.Text(value="image2.jpg", size=25, text_align=ft.TextAlign.CENTER, no_wrap=False)
+        self.text_file = ft.Text(value="", size=25, text_align=ft.TextAlign.CENTER, no_wrap=False)
 
         # Image
-        self.image = ft.Image(src="images/image2.jpg", fit=ft.ImageFit.CONTAIN, width=400, height=400, expand=True)
-
+        self.image = ft.Image(src="images/", fit=ft.ImageFit.CONTAIN, width=400, height=400, expand=True)
+        self.image_path = ""
         # Prediction 
-        self.predict_btn = ft.TextButton(text="Predict", scale=1.5, adaptive=True, on_click=self.on_predict)
+        self.predict_btn = ft.TextButton(text="Predict", disabled=True, visible=False, scale=1.5, adaptive=True, on_click=self.on_predict)
 
         self.predict_text = ft.Text(value="", size=30)
         self.predict_ring_load = ft.ProgressRing(visible=False)
@@ -74,6 +74,9 @@ class App(ft.Column):
         """Change image's source and text file"""
         try:
             print("Selected files:", e.files[0].path)
+            # Image string path
+            self.image_path = e.files[0].path
+    
             self.image.src = e.files[0].path
             self.text_file.value = e.files[0].name
             self.image.update()
@@ -81,6 +84,11 @@ class App(ft.Column):
             # Set prediction text to empty
             self.predict_text.value = ""
             self.predict_text.update()
+
+            # Predict button set visible
+            self.predict_btn.visible = True
+            self.predict_btn.disabled = False
+            self.predict_btn.update()
         except Exception as e:
             print(e)
             self.display_error_message("Can't open the file")
@@ -98,13 +106,15 @@ class App(ft.Column):
         try:
             # Check to show ring loading
             self.check_loading_prediction()
-            self.predict_text.value = f"This is {load_image(self.image.src)} garbage"
+            self.predict_text.value = f"This is {load_image(self.image_path)} garbage"
             self.predict_text.update()
             # Make visible loading to False
             self.check_loading_prediction()
 
         except Exception as e:
-            print("Erroe model", e)
+            print("Error model", e)
+            self.predict_ring_load.value = ""
+            self.predict_ring_load.update()
             self.display_error_message("Can't predict. Please, try again.")
 
     def display_error_message(self, message):

@@ -82,6 +82,7 @@ class App(ft.Column):
             self.predict_text.value = ""
             self.predict_text.update()
         except Exception as e:
+            print(e)
             self.display_error_message("Can't open the file")
     
     def check_loading_prediction(self):
@@ -109,6 +110,6 @@ class App(ft.Column):
     def display_error_message(self, message):
         """Displaying error on the page"""
         dialog = ft.AlertDialog(title=ft.Text(message))
-        self.page.dialog = dialog
+        self.page.overlay.append(dialog)
         dialog.open = True
         self.page.update()
